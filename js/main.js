@@ -30,11 +30,11 @@ var player = {
 	update: function() {
 
 		if((this.sprite.x + this.sprite.width/2) > window.innerWidth || (this.sprite.x - this.sprite.width/2) < 0){
-			this.pV *= -0.5;
+			this.sprite.rotation = Math.PI - this.sprite.rotation;
 		}
 
 		if((this.sprite.y + this.sprite.height/2) > window.innerHeight || (this.sprite.y - this.sprite.height/2) < 0){
-			this.pV *= -0.5;
+			this.sprite.rotation = 2 * Math.PI - this.sprite.rotation;
 		}
 
 		if (keys[87]) { // W
@@ -88,6 +88,8 @@ var player = {
 		else {
 			this.sprite.texture = this.textures[0];
 		}
+
+		console.log(this.sprite.rotation);
 	}
 }
 
