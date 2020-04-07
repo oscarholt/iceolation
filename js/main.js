@@ -8,6 +8,9 @@ var player = {
 	xA: 0,
 	yA: 0,
 	speed: 0.1,
+	rotateSpeed: 0.01,
+	rotateAngle: 0,
+	rV:0,
 	init: function() {
 		app.stage.addChild(this.sprite);
 	},
@@ -21,10 +24,12 @@ var player = {
 			this.yA = this.speed;
 		}
 		if (keys[65]) { // A
-			this.xA = -this.speed;
+			this.sprite.rotation -= this.rotateSpeed;
+			// this.xA = -this.speed;
 		}
 		if (keys[68]) { // D
-			this.xA = this.speed;
+			this.sprite.rotation += this.rotateSpeed;
+			// this.xA = this.speed;
 		}
 
 		this.xV += this.xA;
