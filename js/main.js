@@ -1,5 +1,8 @@
 const app = new PIXI.Application({ backgroundColor: 0x1099bb });
 document.body.appendChild(app.view);
+const loader = new PIXI.Loader(); // you can also create your own if you want
+
+loader.add('player', 'img/player.jpg');
 
 var keys = [];
 var player = {
@@ -9,9 +12,14 @@ var player = {
 	rotateSpeed: 0.005,
 	rotateDamp: 0.95,
 	rV:0,
-	init: function() {
+	init: function(sprite) {
+		this.sprite = PIXI.Sprite.from(sprite);
 		app.stage.addChild(this.sprite);
-		this.sprite.pivot.set(0.5, 0.5);
+
+		this.sprite.pivot.set(this.sprite.width/2, this.sprite.height/2);
+
+		this.sprite.x = 20;
+		this.sprite.y = 20;
 	},
 	update: function() {
 		if (keys[87]) { // W
@@ -40,13 +48,16 @@ var player = {
 		this.sprite.y += Math.sin(this.sprite.rotation) * this.pV;
 
 		this.sprite.rotation += this.rV;
-	},
-	sprite: PIXI.Sprite.from('img/player.jpg')
+	}
 }
 
-function init() {
-	player.init();
+loader.load((loader, resources) => {
+	player.init(resources.player.texture);
 
+	init();
+});
+
+function init() {
 	app.ticker.add((delta) => { // Draw
 		draw();
 	});
@@ -62,5 +73,3 @@ function init() {
 function draw() {
 	player.update();
 }
-
-init();
