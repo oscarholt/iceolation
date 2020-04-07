@@ -31,10 +31,14 @@ var player = {
 
 		if((this.sprite.x + this.sprite.width/2) > window.innerWidth || (this.sprite.x - this.sprite.width/2) < 0){
 			this.sprite.rotation = Math.PI - this.sprite.rotation;
+			//this.pV *= 0.5;
+			this.rV *= 0.5;
 		}
-		
+
 		if((this.sprite.y + this.sprite.height/2) > window.innerHeight || (this.sprite.y - this.sprite.height/2) < 0){
 			this.sprite.rotation = 2 * Math.PI - this.sprite.rotation;
+			//this.pV *= 0.5;
+			this.rV *= 0.5;
 		}
 
 		if (keys[87]) { // W
