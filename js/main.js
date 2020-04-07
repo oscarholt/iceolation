@@ -7,6 +7,34 @@ loader.add('player_2', 'img/player_2.png');
 loader.add('player_3', 'img/player_3.png');
 
 var keys = [];
+var camera = {
+	x: 0,
+	y: 0,
+	speed: 5,
+	init: function() {
+
+	},
+	update: function() {
+		// Move camera smoothly
+		this.x = player.sprite.x;
+		this.y = player.sprite.y;
+
+		app.stage.x = -camera.x + window.innerWidth / 2;
+		app.stage.y = -camera.y + window.innerHeight / 2;
+	}
+}
+var playpen = {
+	width: 5000,
+	height: 3000,
+	sprite: new PIXI.Graphics(),
+	init: function() {
+		app.stage.addChild(this.sprite);
+	},
+	update: function() {
+		this.sprite.lineStyle(10, 0xFFFFFF, 1);
+		this.sprite.drawRect(0, 0, this.width, this.height);
+	}
+};
 var player = {
 	textures: [],
 	currentTexture: 0,
@@ -24,18 +52,18 @@ var player = {
 
 		this.sprite.pivot.set(this.sprite.width/2, this.sprite.height/2);
 
-		this.sprite.x = window.innerWidth/2; //Center horizontally
-		this.sprite.y = window.innerHeight/2; //Center vertically
+		this.sprite.x = 200; //Center horizontally
+		this.sprite.y = 200; //Center vertically
 	},
 	update: function() {
 
-		if((this.sprite.x + this.sprite.width/2) > window.innerWidth || (this.sprite.x - this.sprite.width/2) < 0){
+		if((this.sprite.x + this.sprite.width/2) > playpen.width || (this.sprite.x - this.sprite.width/2) < 0){
 			this.sprite.rotation = Math.PI - this.sprite.rotation;
 			//this.pV *= 0.5;
 			this.rV *= 0.5;
 		}
 
-		if((this.sprite.y + this.sprite.height/2) > window.innerHeight || (this.sprite.y - this.sprite.height/2) < 0){
+		if((this.sprite.y + this.sprite.height/2) > playpen.height || (this.sprite.y - this.sprite.height/2) < 0){
 			this.sprite.rotation = 2 * Math.PI - this.sprite.rotation;
 			//this.pV *= 0.5;
 			this.rV *= 0.5;
@@ -88,13 +116,12 @@ var player = {
 		else {
 			this.sprite.texture = this.textures[0];
 		}
-
-		console.log(this.sprite.rotation);
 	}
 }
 
 loader.load((loader, resources) => {
 	player.init(resources.player.texture);
+	playpen.init();
 
 	init();
 });
@@ -120,4 +147,6 @@ function init() {
 
 function draw() {
 	player.update();
+	playpen.update();
+	camera.update();
 }
