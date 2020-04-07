@@ -13,9 +13,9 @@ var player = {
 	textureCounter: 0,
 	pV: 0,
 	speed: 0.2,
-	speedDamp: 0.98,
+	speedDamp: 0.995,
 	rotateSpeed: 0.001,
-	rotateDamp: 0.95,
+	rotateDamp: 0.999,
 	rV:0,
 	init: function(sprite) {
 		this.textures = [loader.resources.player.texture, loader.resources.player_2.texture, loader.resources.player_3.texture];
@@ -64,12 +64,8 @@ var player = {
 			}
 		}
 
-		if (!keys[87] && !keys[83]) { // Neither A or D pressed
-			this.pV *= this.speedDamp;
-		}
-		if (!keys[65] && !keys[68]) { // Neither A or D pressed
-			this.rV *= this.rotateDamp;
-		}
+		this.pV *= this.speedDamp;
+		this.rV *= this.rotateDamp;
 
 		this.sprite.x += Math.cos(this.sprite.rotation) * this.pV;
 		this.sprite.y += Math.sin(this.sprite.rotation) * this.pV;
