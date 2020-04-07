@@ -23,10 +23,19 @@ var player = {
 
 		this.sprite.pivot.set(this.sprite.width/2, this.sprite.height/2);
 
-		this.sprite.x = window.innerWidth/2;
-		this.sprite.y = window.innerHeight/2;
+		this.sprite.x = window.innerWidth/2; //Center horizontally
+		this.sprite.y = window.innerHeight/2; //Center vertically
 	},
 	update: function() {
+
+		if((this.sprite.x + this.sprite.width/2) > window.innerWidth || (this.sprite.x - this.sprite.width/2) < 0){
+			this.pV *= -0.2;
+		}
+
+		if((this.sprite.y + this.sprite.height/2) > window.innerHeight || (this.sprite.y - this.sprite.height/2) < 0){
+			this.pV *= -0.2;
+		}
+
 		if (keys[87]) { // W
 			this.pV += this.speed;
 		}
