@@ -1,7 +1,15 @@
 function setup() {
-	
+
 }
 
 function draw() {
-	ellipse(50, 50, 80, 80);
+	var i = 50;
+	var j = 80;
+	var count = 0;
+	while(count < 10){
+		ellipse(i, i, j, j);
+		i += 10;
+		j += 10;
+		count++;
+	}
 }
