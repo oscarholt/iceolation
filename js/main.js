@@ -3,40 +3,43 @@ document.body.appendChild(app.view);
 
 var keys = [];
 var player = {
-	xV: 0,
-	yV: 0,
-	xA: 0,
-	yA: 0,
+	pV: 0,
 	speed: 0.1,
-	rotateSpeed: 0.01,
-	rotateAngle: 0,
+	speedDamp: 0.95,
+	rotateSpeed: 0.005,
+	rotateDamp: 0.95,
 	rV:0,
 	init: function() {
 		app.stage.addChild(this.sprite);
+		this.sprite.pivot.set(0.5, 0.5);
 	},
 	update: function() {
-		this.xA = 0;
-		this.yA = 0;
 		if (keys[87]) { // W
-			this.yA = -this.speed;
+			this.pV += this.speed;
 		}
 		if (keys[83]) { // S
-			this.yA = this.speed;
+			this.pV -= this.speed;
 		}
 		if (keys[65]) { // A
-			this.sprite.rotation -= this.rotateSpeed;
+			this.rV -= this.rotateSpeed;
 			// this.xA = -this.speed;
 		}
 		if (keys[68]) { // D
-			this.sprite.rotation += this.rotateSpeed;
+			this.rV += this.rotateSpeed;
 			// this.xA = this.speed;
 		}
 
-		this.xV += this.xA;
-		this.yV += this.yA;
+		if (!keys[87] && !keys[83]) { // Neither A or D pressed
+			this.pV *= this.speedDamp;
+		}
+		if (!keys[65] && !keys[68]) { // Neither A or D pressed
+			this.rV *= this.rotateDamp;
+		}
 
-		this.sprite.x += this.xV;
-		this.sprite.y += this.yV;
+		this.sprite.x += Math.cos(this.sprite.rotation) * this.pV;
+		this.sprite.y += Math.sin(this.sprite.rotation) * this.pV;
+
+		this.sprite.rotation += this.rV;
 	},
 	sprite: PIXI.Sprite.from('img/player.jpg')
 }
