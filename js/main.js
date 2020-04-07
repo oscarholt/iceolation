@@ -7,9 +7,9 @@ loader.add('player', 'img/player.jpg');
 var keys = [];
 var player = {
 	pV: 0,
-	speed: 0.1,
-	speedDamp: 0.95,
-	rotateSpeed: 0.005,
+	speed: 0.2,
+	speedDamp: 0.98,
+	rotateSpeed: 0.001,
 	rotateDamp: 0.95,
 	rV:0,
 	init: function(sprite) {
@@ -29,12 +29,20 @@ var player = {
 			this.pV -= this.speed;
 		}
 		if (keys[65]) { // A
-			this.rV -= this.rotateSpeed;
-			// this.xA = -this.speed;
+			if (keys[83]) { // S // For when player is moving backwards
+				this.rV += this.rotateSpeed;
+			}
+			else {
+				this.rV -= this.rotateSpeed;
+			}
 		}
 		if (keys[68]) { // D
-			this.rV += this.rotateSpeed;
-			// this.xA = this.speed;
+			if (keys[83]) { // S
+				this.rV -= this.rotateSpeed;
+			}
+			else {
+				this.rV += this.rotateSpeed;
+			}
 		}
 
 		if (!keys[87] && !keys[83]) { // Neither A or D pressed
