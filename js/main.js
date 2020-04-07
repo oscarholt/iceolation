@@ -29,11 +29,11 @@ var player = {
 	update: function() {
 
 		if((this.sprite.x + this.sprite.width/2) > window.innerWidth || (this.sprite.x - this.sprite.width/2) < 0){
-			pV *= -0.2;
+			this.pV *= -0.2;
 		}
 
-		if(this.sprite.y > window.innerHeight || this.sprite.y < 0){
-			pV *= -0.2;
+		if((this.sprite.y + this.sprite.height/2) > window.innerHeight || (this.sprite.y - this.sprite.height/2) < 0){
+			this.pV *= -0.2;
 		}
 
 		if (keys[87]) { // W
