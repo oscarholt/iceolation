@@ -3,9 +3,13 @@ document.body.appendChild(app.view);
 const loader = new PIXI.Loader(); // you can also create your own if you want
 
 loader.add('player', 'img/player.png');
+loader.add('player_2', 'img/player_2.png');
 
 var keys = [];
 var player = {
+	textures: [],
+	currentTexture: 0,
+	textureCounter: 0,
 	pV: 0,
 	speed: 0.2,
 	speedDamp: 0.98,
@@ -13,7 +17,8 @@ var player = {
 	rotateDamp: 0.95,
 	rV:0,
 	init: function(sprite) {
-		this.sprite = PIXI.Sprite.from(sprite);
+		this.textures = [loader.resources.player.texture, loader.resources.player_2.texture];
+		this.sprite = PIXI.Sprite.from(this.textures[this.currentTexture]);
 		app.stage.addChild(this.sprite);
 
 		this.sprite.pivot.set(this.sprite.width/2, this.sprite.height/2);
@@ -56,6 +61,17 @@ var player = {
 		this.sprite.y += Math.sin(this.sprite.rotation) * this.pV;
 
 		this.sprite.rotation += this.rV;
+
+		// Swap texture every 10 frames
+		if (Math.abs(this.pV) > 2) {
+			this.textureCounter++;
+			if (this.textureCounter > 10) {
+				this.currentTexture = (this.currentTexture == 0) ? 1 : 0;
+				this.sprite.texture = this.textures[this.currentTexture];
+
+				this.textureCounter = 0;
+			}
+		}
 	}
 }
 
