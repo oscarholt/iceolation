@@ -18,8 +18,8 @@ var player = {
 
 		this.sprite.pivot.set(this.sprite.width/2, this.sprite.height/2);
 
-		this.sprite.x = 20;
-		this.sprite.y = 20;
+		this.sprite.x = window.innerWidth/2;
+		this.sprite.y = window.innerHeight/2;
 	},
 	update: function() {
 		if (keys[87]) { // W
