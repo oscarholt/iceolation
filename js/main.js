@@ -40,7 +40,7 @@ function init() {
 	player.init();
 
 	app.ticker.add((delta) => { // Draw
-		player.update();
+		draw();
 	});
 
 	window.addEventListener("keydown", function(event) {
@@ -49,6 +49,10 @@ function init() {
 	window.addEventListener("keyup", function(event) {
 		keys[event.keyCode] = false;
 	});
+}
+
+function draw() {
+	player.update();
 }
 
 init();
