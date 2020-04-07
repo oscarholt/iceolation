@@ -1,8 +1,8 @@
-const app = new PIXI.Application({ backgroundColor: 0x1099bb });
+const app = new PIXI.Application({ backgroundColor: 0xAADBFF });
 document.body.appendChild(app.view);
 const loader = new PIXI.Loader(); // you can also create your own if you want
 
-loader.add('player', 'img/player.jpg');
+loader.add('player', 'img/player.png');
 
 var keys = [];
 var player = {
@@ -69,6 +69,12 @@ function init() {
 	app.ticker.add((delta) => { // Draw
 		draw();
 	});
+
+	// Fill screen
+	app.renderer.view.style.position = "absolute";
+	app.renderer.view.style.display = "block";
+	app.renderer.autoResize = true;
+	app.renderer.resize(window.innerWidth, window.innerHeight);
 
 	window.addEventListener("keydown", function(event) {
 		keys[event.keyCode] = true;
