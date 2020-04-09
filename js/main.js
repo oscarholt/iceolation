@@ -82,10 +82,15 @@ var player = {
 	rV:0,
 	trail: [],
 	trailLength: 500,
+	health: 100,
 	init: function(sprite) {
 		this.textures = [loader.resources.player.texture, loader.resources.player_2.texture, loader.resources.player_3.texture];
 		this.sprite = PIXI.Sprite.from(this.textures[this.currentTexture]);
 		app.stage.addChild(this.sprite);
+
+		// Add graphics layer
+		this.graphics = new PIXI.Graphics();
+		this.sprite.addChild(this.graphics); // Make graphics a child of sprite
 
 		this.sprite.pivot.set(this.sprite.width/2, this.sprite.height/2);
 
@@ -93,6 +98,7 @@ var player = {
 		this.sprite.y = 800; //Center vertically
 	},
 	update: function() {
+		this.graphics.clear();
 
 		// if((this.sprite.x + this.sprite.width/2) > playpen.width || (this.sprite.x - this.sprite.width/2) < 0){
 		// 	this.sprite.rotation = Math.PI - this.sprite.rotation;
@@ -168,6 +174,11 @@ var player = {
 		if (this.trail.length > this.trailLength) {
 			this.trail.shift(); // Remove first element
 		}
+
+		// Draw graphics
+		this.graphics.lineStyle(10, 0xFF0000, 1);
+		this.graphics.moveTo(0, -20);
+		this.graphics.lineTo(this.sprite.width * (this.health / 100), -20);
 	}
 }
 
@@ -183,10 +194,15 @@ function Enemy() {
 	this.rV = 0,
 	this.trail = [],
 	this.trailLength = 500,
+	this.health = 100,
 	this.init = function() {
 		this.textures = [loader.resources.player.texture, loader.resources.player_2.texture, loader.resources.player_3.texture];
 		this.sprite = PIXI.Sprite.from(this.textures[this.currentTexture]);
 		app.stage.addChild(this.sprite);
+
+		// Add graphics layer
+		this.graphics = new PIXI.Graphics();
+		this.sprite.addChild(this.graphics); // Make graphics a child of sprite
 
 		this.sprite.pivot.set(this.sprite.width/2, this.sprite.height/2);
 
@@ -252,6 +268,11 @@ function Enemy() {
 		if (this.trail.length > this.trailLength) {
 			this.trail.shift(); // Remove first element
 		}
+
+		// Draw graphics
+		this.graphics.lineStyle(10, 0xFF0000, 1);
+		this.graphics.moveTo(0, -20);
+		this.graphics.lineTo(this.sprite.width * (this.health / 100), -20);
 	}
 }
 function addEnemy() {
