@@ -135,7 +135,7 @@ var player = {
 			}
 		}
 		if(!keys[65] && !keys[68]){
-			this.rotateDamp = 0.7;
+			this.rotateDamp = 0.95;
 		}
 		else {
 			this.rotateDamp = 0.995;
