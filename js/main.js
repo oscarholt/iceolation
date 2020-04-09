@@ -134,6 +134,13 @@ var player = {
 				this.rV += this.rotateSpeed;
 			}
 		}
+		if(!keys[65] && !keys[68]){
+			this.rotateDamp = 0.7;
+		}
+		else {
+			this.rotateDamp = 0.995;
+		}
+
 
 		var footX = this.sprite.x - Math.cos(this.sprite.rotation + Math.PI / 2) * -100;
 		var footY = this.sprite.y - Math.sin(this.sprite.rotation + Math.PI / 2) * -100;
@@ -310,12 +317,12 @@ function init() {
 		keys[event.keyCode] = false;
 	});
 
-	addEnemy();
-	addEnemy();
-	addEnemy();
-	addEnemy();
-	addEnemy();
-	addEnemy();
+	// addEnemy();
+	// addEnemy();
+	// addEnemy();
+	// addEnemy();
+	// addEnemy();
+	// addEnemy();
 }
 
 function draw() {
