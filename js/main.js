@@ -5,6 +5,7 @@ const loader = new PIXI.Loader(); // you can also create your own if you want
 loader.add('player', 'img/player.png');
 loader.add('player_2', 'img/player_2.png');
 loader.add('player_3', 'img/player_3.png');
+loader.add('blood_1', 'img/blood_1.png');
 
 var keys = [];
 var win = {
@@ -33,6 +34,7 @@ var playpen = {
 	sprite: new PIXI.Graphics(),
 	init: function() {
 		app.stage.addChild(this.sprite);
+		app.stage.addChild(blood);
 	},
 	update: function() {
 		this.sprite.clear();
@@ -69,6 +71,7 @@ var playpen = {
 		}
 	}
 };
+var blood = new PIXI.ParticleContainer();
 var enemies = [];
 var player = {
 	textures: [],
@@ -297,6 +300,7 @@ function Enemy() {
 
 		// Calc health
 		if (this.health < 1) {
+			addBloodSplat(this.sprite.x, this.sprite.y)
 			this.kill();
 		}
 	}
@@ -307,13 +311,14 @@ function addEnemy() {
 	enemy.init();
 	enemies.push(enemy);
 }
+function addBloodSplat(x, y) {
+	var bloodSprite = PIXI.Sprite.from(loader.resources.blood_1.texture);
+  blood.addChild(bloodSprite);
 
-loader.load((loader, resources) => {
-	playpen.init();
-	player.init(resources.player.texture);
-
-	init();
-});
+	bloodSprite.x = x;
+	bloodSprite.y = y;
+	bloodSprite.pivot.set(bloodSprite.width/2, bloodSprite.height/2);
+}
 
 function damageNearby(x, y, range, damage) {
 	for (var e = 0; e < enemies.length; e++) { // See if ray is inside enemy
@@ -350,6 +355,13 @@ function damageInFront(x, y, angle, range, damage) {
 		}
 	}
 }
+
+loader.load((loader, resources) => {
+	playpen.init();
+	player.init(resources.player.texture);
+
+	init();
+});
 
 function init() {
 	win.width = window.innerWidth;
