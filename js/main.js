@@ -84,6 +84,8 @@ var player = {
 	rV:0,
 	trail: [],
 	trailLength: 500,
+	damageRange: 100,
+	damageStrength: 40,
 	health: 100,
 	init: function(sprite) {
 		this.textures = [loader.resources.player.texture, loader.resources.player_2.texture, loader.resources.player_3.texture];
@@ -158,11 +160,15 @@ var player = {
 		this.sprite.y = Math.max(Math.min(this.sprite.y, playpen.height), 0);
 
 		// Swap texture every 10 frames
-		if (this.pV > 2) {
+		if (keys[32]) { // Space bar
 			this.textureCounter++;
 			if (this.textureCounter > 10) {
 				this.currentTexture = (this.currentTexture == 0) ? 1 : 0;
 				this.sprite.texture = this.textures[this.currentTexture];
+
+				// Punch
+				damageNearby(this.sprite.x + Math.cos(this.sprite.rotation) * this.damageRange, this.sprite.y + Math.sin(this.sprite.rotation) * this.damageRange, this.damageRange, this.damageStrength); // Offset damage to be in front of player
+				//damageInFront(this.sprite.x, this.sprite.y, this.sprite.rotation, 100, 10);
 
 				this.textureCounter = 0;
 			}
@@ -204,6 +210,12 @@ function Enemy() {
 	this.trail = [],
 	this.trailLength = 500,
 	this.health = 100,
+	this.kill = function() {
+		var index = enemies.indexOf(this);
+
+		app.stage.removeChild(this.sprite);
+		enemies.splice(index, 1); // Remove enemy from array
+	}
 	this.init = function() {
 		this.textures = [loader.resources.player.texture, loader.resources.player_2.texture, loader.resources.player_3.texture];
 		this.sprite = PIXI.Sprite.from(this.textures[this.currentTexture]);
@@ -221,6 +233,8 @@ function Enemy() {
 		this.speed = Math.random() * 4 + 4;
 	},
 	this.update = function() {
+		this.graphics.clear();
+
 		// if((this.sprite.x + this.sprite.width/2) > playpen.width || (this.sprite.x - this.sprite.width/2) < 0){
 		// 	this.sprite.rotation = Math.PI - this.sprite.rotation;
 		// 	//this.pV *= 0.5;
@@ -282,6 +296,11 @@ function Enemy() {
 		this.graphics.lineStyle(10, 0xFF0000, 1);
 		this.graphics.moveTo(0, -20);
 		this.graphics.lineTo(this.sprite.width * (this.health / 100), -20);
+
+		// Calc health
+		if (this.health < 1) {
+			this.kill();
+		}
 	}
 }
 function addEnemy() {
@@ -297,6 +316,42 @@ loader.load((loader, resources) => {
 
 	init();
 });
+
+function damageNearby(x, y, range, damage) {
+	for (var e = 0; e < enemies.length; e++) { // See if ray is inside enemy
+		var enemy = enemies[e];
+		var dist = Math.sqrt(Math.pow(x - enemy.sprite.x, 2) + Math.pow(y - enemy.sprite.y, 2));
+
+		if (dist < range) { // Ray is inside enemy
+			enemy.health -= damage;
+
+			break;
+		}
+	}
+}
+function damageInFront(x, y, angle, range, damage) {
+	for (var e = 0; e < enemies.length; e++) { // See if ray is inside enemy
+		var enemy = enemies[e];
+
+		for (var i = 0; i < range; i++) { // Send ray
+			var ray = {
+				x: x,
+				y: y,
+				angle: angle
+			};
+			var dist = Math.sqrt(Math.pow(enemy.sprite.x - ray.x, 2) + Math.pow(enemy.sprite.y - ray.y, 2));
+
+			if (dist < enemy.sprite.width) { // Ray is inside enemy
+				enemy.health -= damage;
+
+				break;
+			}
+
+			ray.x += Math.cos(ray.angle);
+			ray.y += Math.sin(ray.angle);
+		}
+	}
+}
 
 function init() {
 	win.width = window.innerWidth;
@@ -319,12 +374,12 @@ function init() {
 		keys[event.keyCode] = false;
 	});
 
-	// addEnemy();
-	// addEnemy();
-	// addEnemy();
-	// addEnemy();
-	// addEnemy();
-	// addEnemy();
+	addEnemy();
+	addEnemy();
+	addEnemy();
+	addEnemy();
+	addEnemy();
+	addEnemy();
 }
 
 function draw() {
