@@ -1,5 +1,6 @@
-const app = new PIXI.Application({ backgroundColor: 0x45A1E4 });
+const app = new PIXI.Application({ });
 document.body.appendChild(app.view);
+document.body.style.backgroundImage = "img/ocean_texture_1.jpg";
 const loader = new PIXI.Loader(); // you can also create your own if you want
 
 loader.add('player', 'img/player.png');
@@ -50,6 +51,7 @@ var playpen = {
 			for (var i = 1; i < player.trail.length; i++) {
 				var coords = player.trail[i];
 
+				this.sprite.lineStyle(10, 0xFFFFFF, 0.5);
 				this.sprite.lineTo(Math.max(Math.min(coords.x, this.width), 0), Math.max(Math.min(coords.y, this.height), 0));
 			}
 			this.sprite.endFill();
@@ -146,7 +148,6 @@ var player = {
 			this.rotateDamp = 0.995;
 		}
 
-
 		var footX = this.sprite.x - Math.cos(this.sprite.rotation + Math.PI / 2) * -100;
 		var footY = this.sprite.y - Math.sin(this.sprite.rotation + Math.PI / 2) * -100;
 
@@ -187,6 +188,7 @@ var player = {
 			x: footX,
 			y: footY
 		});
+
 		if (this.trail.length > this.trailLength) {
 			this.trail.shift(); // Remove first element
 		}
