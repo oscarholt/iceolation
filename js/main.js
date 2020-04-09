@@ -300,7 +300,7 @@ function Enemy() {
 
 		// Calc health
 		if (this.health < 1) {
-			addBloodSplat(this.sprite.x, this.sprite.y)
+			addBloodSplat(this.sprite.x + (Math.random() - 0.5) * 100, this.sprite.y + (Math.random() - 0.5) * 100)
 			this.kill();
 		}
 	}
