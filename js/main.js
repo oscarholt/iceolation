@@ -1,5 +1,6 @@
 const app = new PIXI.Application({ });
 document.body.appendChild(app.view);
+document.body.style.backgroundImage = "img/ocean_texture_1.jpg";
 const loader = new PIXI.Loader(); // you can also create your own if you want
 
 loader.add('player', 'img/player.png');
